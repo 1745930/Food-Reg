@@ -90,3 +90,33 @@ app.get('/login',(req,res)=>{
         res.send("DNE")
     })
 })
+app.put('/changeSubscription',(req,res)=>{//takes unique identifier and suscriptionID to change
+  body = req.body
+  console.log(body)
+  update = {subscription:body.subscriptionId, }
+  var result = database.ref('user/'+body.username).update(update,err=>{
+    if(err){
+      res.status(400).send('there was an error')
+      console.log(err)
+    }
+    else{
+      res.status(202).send('changes sucessful')
+    }
+  })
+})
+app.get('/loadSubscriptions',(req,res)=>{//THIS DOES NOT FUNCTION ATM
+  var result = database.ref('subscription/')
+  console.log(result.collections())
+  // .once("value",function(snapshot){
+  //   snapshot.forEach(function (childSnapshot){
+  //       console.log(childSnapshot.exportVal())
+  //       res.send(childSnapshot.exportVal())
+  //load all available subscriptions
+
+//   res.send('attempted')
+  });
+  // console.log(subscriptions)
+  // res.send(subscriptions)
+  // console.log('retrieved')
+
+
