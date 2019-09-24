@@ -113,7 +113,17 @@ app.get('/loadSubscriptions',(req,res)=>{//THIS DOES NOT FUNCTION ATM
         subscriptions.push(childSnapshot.val())
 
   //load all available subscriptions
-
+app.get('/loadActiveSubscriptions',(req,res)=>{
+  activeSubscriber =[]
+  var result = database.ref('user/').once("value").then(function(snapshot){
+    console.log(snapshot.val())
+    snapshot.forEach(function(childSnapshot){
+      activeSubscription = {firstname: childSnapshot.val().fname, lastname: childSnapshot.val().lname,address:childSnapshot.exportVal().address, subscription: childSnapshot.val().subscription}
+      activeSubscriber.push(activeSubscription)
+    })
+    console.log(activeSubscriber)
+})
+})
 //   res.send('attempted')
   })
   console.log(subscriptions)
