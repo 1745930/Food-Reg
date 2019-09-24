@@ -119,4 +119,13 @@ app.get('/loadSubscriptions',(req,res)=>{//THIS DOES NOT FUNCTION ATM
   // res.send(subscriptions)
   // console.log('retrieved')
 
-
+app.put('/registerFood',(req,res)=>{
+  body = req.body
+    database.ref('food/'+body.name).set(body)
+    res.status(201).send('data saved')
+})
+app.put('/registerCarePackage',(req,res)=>{
+  body = req.body
+  database.ref('package/'+body.name).set(body)
+  res.status(201).send('data saved')
+})
