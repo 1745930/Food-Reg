@@ -105,19 +105,22 @@ app.put('/changeSubscription',(req,res)=>{//takes unique identifier and suscript
   })
 })
 app.get('/loadSubscriptions',(req,res)=>{//THIS DOES NOT FUNCTION ATM
-  var result = database.ref('subscription/')
-  console.log(result.collections())
-  // .once("value",function(snapshot){
-  //   snapshot.forEach(function (childSnapshot){
-  //       console.log(childSnapshot.exportVal())
-  //       res.send(childSnapshot.exportVal())
+  var result = database.ref('subscripition/')
+  .once("value",function(snapshot){
+    subscriptions=[]
+    snapshot.forEach(function (childSnapshot){ 
+        console.log(childSnapshot.exportVal())
+        subscriptions.push(childSnapshot.val())
+
   //load all available subscriptions
 
 //   res.send('attempted')
-  });
-  // console.log(subscriptions)
-  // res.send(subscriptions)
-  // console.log('retrieved')
+  })
+  console.log(subscriptions)
+  res.send(subscriptions)
+  console.log('retrieved')
+  })
+})
 
 app.put('/registerFood',(req,res)=>{
   body = req.body
