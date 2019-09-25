@@ -73,8 +73,31 @@ app.put('/updateProfile',(req,res)=>{
   })   
 
 })
-
-
+//======>
+app.put('/updateProfile',(req,res)=>{
+  //takes form input and updates the entire profile
+  username = req.body.email
+  var changeobject;
+  var result = database.ref('user/')
+  .once("value").then(function(snapshot){
+    snapshot.forEach(function (childSnapshot){
+      if( childSnapshot.val().email == username){
+        changeobject = childSnapshot.key
+        console.log(childSnapshot.key)
+        // childSnapshot.update(req.body,err=>{
+        //   if(err){
+        //     console.log(err)
+        //     res.status(400).send('bad data sent')
+        //     }
+        //     else{
+        //       res.send('update Suscessful')
+        //     }
+        // })
+      }
+    })
+  })
+//<========= pending change towards robustness
+  
 app.get('/login',(req,res)=>{
     body = req.body
     
