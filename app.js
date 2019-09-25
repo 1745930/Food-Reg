@@ -90,3 +90,74 @@ app.get('/login',(req,res)=>{
         res.send("DNE")
     })
 })
+app.put('/changeSubscription',(req,res)=>{//takes unique identifier and suscriptionID to change
+  body = req.body
+  hash =''
+  console.log(body)
+  update = {subscription:body.subscriptionId, }
+  var result = database.ref('user/'+hash).update(update,err=>{
+    if(err){
+      res.status(400).send('there was an error')
+      console.log(err)
+    }
+    else{
+      res.status(202).send('changes sucessful')
+    }
+  })
+})
+app.get('/loadSubscriptions',(req,res)=>{//THIS DOES NOT FUNCTION ATM
+  var result = database.ref('subscripition/')
+  .once("value",function(snapshot){
+    subscriptions=[]
+    snapshot.forEach(function (childSnapshot){ 
+        console.log(childSnapshot.exportVal())
+        subscriptions.push(childSnapshot.val().name)
+
+  //load all available subscriptions
+
+//   res.send('attempted')
+  })
+  console.log(subscriptions)
+  res.send(subscriptions)
+  console.log('retrieved')
+  })
+})
+app.get('/loadActiveSubscriptions',(req,res)=>{
+  activeSubscriber =[]
+  var result = database.ref('user/').once("value").then(function(snapshot){
+    console.log(snapshot.val())
+    snapshot.forEach(function(childSnapshot){
+      if(childSnapshot.val().subscription.fullfilled = 'false'){
+      activeSubscription = {address: childSnapshot.exportVal().address,name: childSnapshot.val().fname, subscription: childSnapshot.val().subscription}
+      activeSubscriber.push(activeSubscription)
+      }
+    })
+    console.log(activeSubscriber)
+})
+app.post('/fulfillSubscriptions'(req,res))
+})
+app.get('/login',(req,res)=>{
+  body = req.body
+  
+  var query = database.ref("/user").orderByKey()
+  query.once("value").then(function(snapshot) {
+      snapshot.forEach(function(childSnapshot) {
+          if (body.username === childSnapshot.val().email)
+              if (body.password === childSnapshot.val().password)
+                  res.send(snapshot.val().type)
+      })
+
+      // User does not exist OR password is invalid
+      res.send("DNE")
+  })
+})
+app.put('/registerFood',(req,res)=>{
+  body = req.body
+    database.ref('food/'+body.name).set(body)
+    res.status(201).send('data saved')
+})
+app.put('/registerCarePackage',(req,res)=>{
+  body = req.body
+  database.ref('package/'+body.name).set(body)
+  res.status(201).send('data saved')
+})
